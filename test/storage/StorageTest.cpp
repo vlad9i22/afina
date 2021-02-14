@@ -147,7 +147,8 @@ std::string pad_space(const std::string &s, size_t length) {
 
 TEST(StorageTest, BigTest) {
     const size_t length = 20;
-    SimpleLRU storage(2 * 100000 * length);
+    // SimpleLRU storage(2 * 100000 * length);
+    SimpleLRU storage(1100000);
 
     for (long i = 0; i < 100000; ++i) {
         auto key = pad_space("Key " + std::to_string(i), length);
