@@ -23,39 +23,20 @@ public:
     SimpleLRU(size_t max_size = 1024) : _max_size(max_size), cur_size(0) {}
 
     ~SimpleLRU() {
-        std::cout << "~SimpleLRU" << std::endl;
-        std::vector<lru_node*> a;
-        std::set<lru_node*> b;
-        lru_node *lru_tail = _lru_head.get();     // lru_node *lru_tail = &(*_lru_head);
-        std::cout << lru_tail  << std::endl;
+        lru_node *lru_tail = _lru_head.get();
         while(lru_tail && lru_tail->next != nullptr) {
-          lru_tail = lru_tail->next.get(); // lru_tail = &(*lru_tail->next);
-          // std::cout << "Goint to tail" << lru_tail->prev << std::endl;
+          lru_tail = lru_tail->next.get();
         }
-        // if(!lru_tail) {
-        //   std::cout << "Lru_tail dont have" << std::endl;
-        // }
-        // if(lru_tail) {
-        //   std::cout << "Lru_tail have" << std::endl;
-        // }
-        // std::cout << lru_tail << std::endl;
+
         _lru_index.clear();
-        if(lru_tail) {
-          std::cout << " " << lru_tail->prev << std::endl;
-        }
-        // _lru_head.reset(); // TODO: Here is stack overflow
         if (lru_tail && lru_tail->prev){
           lru_tail = lru_tail->prev;
-          std::cout << lru_tail << std::endl;
-        }  // xrenь a ne kod
+        }
         while(lru_tail && lru_tail->prev) {
-          std::cout << "-------------------------------------" << lru_tail << std::endl;
           lru_tail->next.reset(nullptr);
           lru_tail = lru_tail->prev;
-          std::cout << "deleted" << std::endl;
         }
         _lru_head.reset();
-        std::cout << "End of DESTRUCTION" << std::endl;
     }
 
     // Implements Afina::Storage interface
@@ -72,6 +53,7 @@ public:
 
     // Implements Afina::Storage interface
     bool Get(const std::string &key, std::string &value) override;
+    bool Set1(const std::string &key, const std::string &value);
 
 private:
     // LRU cache node
